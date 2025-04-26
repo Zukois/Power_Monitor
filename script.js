@@ -175,7 +175,7 @@ function updateESP2Status(isOnline) {
 }
 
 function openSpreadsheet() {
-  window.open('https://docs.google.com/spreadsheets/d/1m86L6WycmvXsZUJnyBwDda1Yb3iw5VRipit92saJqYM/edit?gid=0#gid=0', '_blank');
+  window.open('https://docs.google.com/spreadsheets/d/1mXYcpft7fxiFB4eqNkPcFJehQwfIHIH79DB5ZaAIqUY/edit?usp=sharing', '_blank');
 }
 
 
