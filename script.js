@@ -295,45 +295,58 @@ const chartPanel1 = new Chart(ctxPanel1, {
     responsive: true,
     maintainAspectRatio: true,
     animation: {
-      duration: 1000, // Waktu animasi lebih lama = lebih smooth
-      easing: 'easeInOutQuad' // Animasi mulus
+      duration: 1200,
+      easing: 'easeInOutSine'
     },
     interaction: {
-      mode: 'index',
+      mode: 'nearest',
       intersect: false,
     },
     elements: {
       line: {
-        tension: 0.4 // Bikin garis agak melengkung (smooth curve)
+        tension: 0.4, // Smooth curve
+        borderWidth: 3,
+        borderJoinStyle: 'round',
+        borderCapStyle: 'round',
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
+        shadowBlur: 10,
+        shadowColor: 'rgba(255,255,255,0.5)'
       },
       point: {
-        radius: 3,
-        hoverRadius: 6,
-        backgroundColor: '#fff',
+        radius: 2,
+        hoverRadius: 5,
+        backgroundColor: '#ffffff',
         borderWidth: 2
       }
     },
     plugins: {
       legend: {
+        position: 'bottom',
         labels: {
-          color: 'white', // Warna teks legend
+          color: 'white',
           font: {
-            size: 14,
-            weight: 'bold'
-          }
+            size: 10,
+            weight: 'normal'
+          },
+          boxWidth: 10,
+          boxHeight: 8
         }
       },
       tooltip: {
         backgroundColor: 'rgba(0,0,0,0.7)',
-        titleFont: { size: 16 },
-        bodyFont: { size: 14 },
-        cornerRadius: 8
+        titleFont: { size: 12 },
+        bodyFont: { size: 10 },
+        cornerRadius: 6
       }
     },
     scales: {
       x: {
         ticks: {
-          color: 'white', // Warna sumbu X
+          color: 'rgba(255,255,255,0.7)',
+          font: {
+            size: 10
+          }
         },
         grid: {
           color: 'rgba(255,255,255,0.1)'
@@ -343,14 +356,16 @@ const chartPanel1 = new Chart(ctxPanel1, {
           text: 'Waktu',
           color: 'white',
           font: {
-            size: 14,
-            weight: 'bold'
+            size: 12
           }
         }
       },
       y: {
         ticks: {
-          color: 'white', // Warna sumbu Y
+          color: 'rgba(255,255,255,0.7)',
+          font: {
+            size: 10
+          }
         },
         grid: {
           color: 'rgba(255,255,255,0.1)'
@@ -360,14 +375,12 @@ const chartPanel1 = new Chart(ctxPanel1, {
           text: 'Nilai',
           color: 'white',
           font: {
-            size: 14,
-            weight: 'bold'
+            size: 12
           }
         }
       }
     }
-  }
-  
+  } 
 });
 
 // Chart untuk Panel 2
