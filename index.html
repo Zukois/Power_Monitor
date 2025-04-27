@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monitoring Panel Listrik 3 Fasa</title>
+    <link rel="icon"
+        href="https://png.pngtree.com/png-clipart/20221230/original/pngtree-lightning-icon-electric-logo-png-image_8832878.png"
+        type="image/png">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://fonts.cdnfonts.com/css/dseg7-classic" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen font-sans">
+    <div class="container mx-auto px-4 py-6">
+        <div class="flex justify-between items-center mb-6 animate__animated animate__fadeIn">
+            <h1 class="text-4xl font-bold text-blue-400">⚡ Monitoring Panel Listrik 3 Fasa</h1>
+            <div class="text-right">
+                <div id="mqttStatus" class="text-sm font-bold text-red-500">Disconnected</div>
+                <div id="clock" class="text-center text-sm md:text-base text-gray-300 font-mono mb-4 animate-fade-in">
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel 1 -->
+        <div
+            class="bg-gray-800 rounded-xl p-6 shadow-xl mb-8 hover:scale-105 transform transition-all duration-300 ease-in-out">
+            <h2
+                class="text-3xl font-extrabold text-center mb-6 text-white bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 tracking-wider animate-fade-in">
+                ⚡ Panel 1
+            </h2>
+            <div class="flex items-center space-x-2 mb-4">
+                <div id="esp1Status" class="w-3 h-3 rounded-full bg-gray-500"></div>
+                <span id="esp1Label" class="text-sm text-gray-300">ESP32 Panel 1: Tidak Aktif</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div
+                    class="bg-blue-800 rounded-2xl shadow-lg p-5 hover:bg-blue-700 transform transition-all duration-300">
+                    <h2 class="text-xl font-semibold mb-3 text-white">🔌 Tegangan (V)</h2>
+                    <p class="text-lime-400 text-2xl font-seven-segment">R: <span id="voltR"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span>V</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">S: <span id="voltS"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span>V</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">T: <span id="voltT"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span>V</p>
+                </div>
+
+
+                <div
+                    class="bg-green-800 rounded-2xl shadow-lg p-5 hover:bg-green-700 transform transition-all duration-300">
+                    <h2 class="text-xl font-semibold mb-3">🔋 Arus (A)</h2>
+                    <p class="text-lime-400 text-2xl font-seven-segment">R: <span id="ampR"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> A</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">S: <span id="ampS"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> A</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">T: <span id="ampT"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> A</p>
+                </div>
+
+                <div
+                    class="bg-yellow-700 rounded-2xl shadow-lg p-5 hover:bg-yellow-600 transform transition-all duration-300">
+                    <h2 class="text-xl font-semibold mb-3">💡 Daya (W)</h2>
+                    <p class="text-lime-400 text-2xl font-seven-segment">R: <span id="wattR"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> W</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">S: <span id="wattS"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> W</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">T: <span id="wattT"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> W</p>
+                </div>
+
+                <div
+                    class="bg-purple-800 rounded-2xl shadow-lg p-5 hover:bg-purple-700 transform transition-all duration-300">
+                    <h2 class="text-xl font-semibold mb-3">📈 Energi (kWh)</h2>
+                    <p class="text-lime-400 text-2xl font-seven-segment">R: <span id="kwhR"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> kWh</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">S: <span id="kwhS"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> kWh</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">T: <span id="kwhT"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> kWh</p>
+                </div>
+            </div>
+            <!-- Chart untuk Panel 1 -->
+            <div class="bg-gray-800 rounded-xl p-6 shadow-xl mb-8">
+                <h2 class="text-xl font-semibold text-center mb-4">Grafik Tegangan dan Arus</h2>
+                <canvas id="chartPanel1" class="w-full h-64"></canvas>
+            </div>
+        </div>
+
+        <!-- Panel 2 -->
+        <div
+            class="bg-gray-800 rounded-xl p-6 shadow-xl mb-8 hover:scale-105 transform transition-all duration-300 ease-in-out">
+            <h2
+                class="text-3xl font-extrabold text-center mb-6 text-white bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 tracking-wider animate-fade-in">
+                ⚡ Panel 2
+            </h2>
+            <div class="flex items-center space-x-2 mb-4">
+                <div id="esp2Status" class="w-3 h-3 rounded-full bg-gray-500"></div>
+                <span id="esp2Label" class="text-sm text-gray-300">ESP32 Panel 2: Tidak Aktif</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div
+                    class="bg-blue-800 rounded-2xl shadow-lg p-5 hover:bg-blue-700 transform transition-all duration-300">
+                    <h2 class="text-xl font-semibold mb-3">🔌 Tegangan (V)</h2>
+                    <p class="text-lime-400 text-2xl font-seven-segment">R: <span id="voltR2"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> V</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">S: <span id="voltS2"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> V</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">T: <span id="voltT2"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> V</p>
+                </div>
+
+                <div
+                    class="bg-green-800 rounded-2xl shadow-lg p-5 hover:bg-green-700 transform transition-all duration-300">
+                    <h2 class="text-xl font-semibold mb-3">🔋 Arus (A)</h2>
+                    <p class="text-lime-400 text-2xl font-seven-segment">R: <span id="ampR2"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> A</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">S: <span id="ampS2"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> A</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">T: <span id="ampT2"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> A</p>
+                </div>
+
+                <div
+                    class="bg-yellow-700 rounded-2xl shadow-lg p-5 hover:bg-yellow-600 transform transition-all duration-300">
+                    <h2 class="text-xl font-semibold mb-3">💡 Daya (W)</h2>
+                    <p class="text-lime-400 text-2xl font-seven-segment">R: <span id="wattR2"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> W</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">S: <span id="wattS2"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> W</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">T: <span id="wattT2"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> W</p>
+                </div>
+
+                <div
+                    class="bg-purple-800 rounded-2xl shadow-lg p-5 hover:bg-purple-700 transform transition-all duration-300">
+                    <h2 class="text-xl font-semibold mb-3">📈 Energi (kWh)</h2>
+                    <p class="text-lime-400 text-2xl font-seven-segment">R: <span id="kwhR2"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> kWh</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">S: <span id="kwhS2"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> kWh</p>
+                    <p class="text-lime-400 text-2xl font-seven-segment">T: <span id="kwhT2"
+                            class="text-lime-400 text-2xl font-seven-segment">-</span> kWh</p>
+                </div>
+            </div>
+
+            <!-- Chart untuk Panel 2 -->
+            <div class="bg-gray-800 rounded-xl p-6 shadow-xl mb-8">
+                <h2 class="text-xl font-semibold text-center mb-4">Grafik Tegangan dan Arus</h2>
+                <canvas id="chartPanel2" class="w-full h-64"></canvas>
+            </div>
+        </div>
+        <div class="flex justify-center my-8">
+            <button onclick="openSpreadsheet()"
+                class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300">
+                📄 Buka Rekap Spreadsheet
+            </button>
+        </div>
+
+        <footer class="text-center text-gray-400 text-sm py-6 animate__animated animate__fadeInUp">
+            Created with ⚡ by <span class="text-blue-400 font-semibold">Your Name</span> — 2025
+            <span class="animate-ping text-red-400">♥</span>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/mqtt/dist/mqtt.min.js"></script>
+        <script src="script.js"></script>
+</body>
+
+</html>
