@@ -140,7 +140,7 @@ function updateVoltR(value) {
 // Cek setiap 5 detik, apakah voltR tidak berubah terlalu lama
 setInterval(() => {
   const now = Date.now();
-  if (now - lastVoltUpdateTime > 10000) {
+  if (now - lastVoltUpdateTime > 30000) {
     updateESP1Status(false); // lebih dari 10 detik tidak ada perubahan = offline
   }
 }, 5000);
@@ -180,7 +180,7 @@ function updateVoltRPanel2(value) {
 // Cek setiap 5 detik, apakah voltR Panel 2 tidak berubah terlalu lama
 setInterval(() => {
   const now = Date.now();
-  if (now - lastVoltUpdateTimePanel2 > 10000) {
+  if (now - lastVoltUpdateTimePanel2 > 30000) {
     updateESP2Status(false); // lebih dari 10 detik tidak ada perubahan = offline
   }
 }, 5000);
